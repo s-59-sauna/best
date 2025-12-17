@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Сауна S-59 Пермь</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <!-- Боковая панель для рекламы (десктоп) -->
+    <aside class="ad-sidebar">
+        <div class="ad-block">
+            <h3>SPA-продукция</h3>
+            <img src="ad1.jpg" alt="Реклама SPA продукции">
+            <p>Эксклюзивные масла и соли для бани</p>
+            <button class="ad-btn">Подробнее</button>
+        </div>
+        <div class="ad-block">
+            <h3>Напитки</h3>
+            <img src="ad2.jpg" alt="Реклама напитков">
+            <p>Освежающие напитки и чаи</p>
+            <button class="ad-btn">Заказать</button>
+        </div>
+        <div class="ad-block">
+            <h3>Аренда</h3>
+            <img src="ad3.jpg" alt="Реклама аренды">
+            <p>Аренда полотенец и халатов</p>
+            <button class="ad-btn">Узнать цену</button>
+        </div>
+        <div class="ad-block">
+            <h3>Спецпредложение</h3>
+            <img src="ad4.jpg" alt="Спецпредложение">
+            <p>Скидка 15% на массаж</p>
+            <button class="ad-btn">Забронировать</button>
+        </div>
+    </aside>
+
+    <!-- Кнопка для скрытия/показа панели на мобильных -->
+    <button class="sidebar-toggle mobile-toggle" onclick="toggleMobilePanel()">
+        <span class="toggle-icon">▲</span>
+    </button>
+
+    <!-- Мобильная версия панели (горизонтальная) -->
+    <div class="mobile-ad-panel">
+        <div class="mobile-ad-slider">
+            <div class="mobile-ad-slide active">
+                <h4>SPA-продукция</h4>
+                <p>Эксклюзивные масла</p>
+            </div>
+            <div class="mobile-ad-slide">
+                <h4>Напитки</h4>
+                <p>Освежающие напитки</p>
+            </div>
+            <div class="mobile-ad-slide">
+                <h4>Аренда</h4>
+                <p>Полотенца и халаты</p>
+            </div>
+            <div class="mobile-ad-slide">
+                <h4>Спецпредложение</h4>
+                <p>Скидка 15% на массаж</p>
+            </div>
+        </div>
+        <div class="mobile-ad-indicators">
+            <span class="indicator active"></span>
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+            <span class="indicator"></span>
+        </div>
+    </div>
+
+    <!-- Основной контейнер -->
+    <div class="main-content-wrapper">
+        <div class="parallax-container">
+            <div class="parallax-bg"></div>
+            <header class="menu-block">    
+                <section class="header-row">
+                    <div class="logo">
+                        <img src="logo_1.jpg" alt="Логотип сайта" class="logo-img">
+                    </div>
+                    <h1 class="site-title"><strong>S-59<br>САУНА БАНЯ SPA<br>ПЕРМЬ</strong></h1>
+                    <div class="header-contacts">
+                        <ul>
+                            <li class="bron"><strong>Забронировать</strong></li>
+                            <li><strong>2-766-559<br>8-952-33-55-444</strong></li>
+                            <li><a href="https://t.me/ваш_username" target="_blank" rel="noopener noreferrer"><strong>Telegram</strong></a></li>
+                            <li><a href="https://vk.com/sauna59perm" target="_blank" rel="noopener noreferrer"><strong>Vk</strong></a></li>
+                            <li><a href="https://yandex.ru/maps/org/s_59/1747083664/?ll=56.322407%2C58.034021&z=13" target="_blank" rel="noopener noreferrer"><strong>yandex</strong></a></li>
+                        </ul>           
+                    </div>
+                </section>
+
+                <div class="slider">
+                    <div class="slides">
+                        <div class="slide-item"><img src="bigsauna.jpg" alt="Большая сауна"></div>
+                        <div class="slide-item"><img src="litlesauna.jpg" alt="Малая сауна"></div>
+                        <div class="slide-item"><img src="basssein.jpg" alt="Бассейн"></div>
+                    </div>
+                </div>
+            </header>
+        </div>
+
+        <main class="main-content">
+            <nav class="navigation">
+                <ul class="refs">
+                    <li><a href="#gallery"><strong>галерея</strong></a></li>
+                    <li><a href="#feedback"><strong>отзывы</strong></a></li>
+                    <li><a href="#discount"><strong>акции</strong></a></li>
+                    <li><a href="#contacts"><strong>контакты</strong></a></li>
+                </ul>
+            </nav>
+            
+            <section class="about">
+                <h2 class="for_you"><strong>К ВАШИМ УСЛУГАМ</strong></h2>
+                <div class="gallery">
+                    <div class="bigsauna">
+                        <div class="photobs">
+                            <img src="bigsauna.jpg" alt="Большая сауна">
+                        </div>
+                        <h3>большая сауна</h3>
+                    </div>
+                    <div class="litlesauna">
+                        <div class="photols">
+                            <img src="litlesauna.jpg" alt="Малая сауна">
+                        </div>
+                        <h3>малая сауна</h3>
+                    </div>
+                </div>
+            </section>
+
+            <section class="why_sauna">
+                <h2 id="why"><strong>Почему сауна — лучший выбор для здоровья и отдыха!</strong></h2>
+                <div class="benefits-list">
+                    <div class="benefit-item">✨ Улучшение кровообращения и укрепление сердечно-сосудистой системы.</div>
+                    <div class="benefit-item">⚡ Повышение иммунитета и профилактика простудных заболеваний.</div>
+                    <div class="benefit-item">😴 Глубокий релакс и снятие стресса.</div>
+                    <div class="benefit-item">💆‍♂️ Расслабление мышц и избавление от болей в спине и суставах.</div>
+                    <div class="benefit-item">🍀 Детоксикация организма через активное потоотделение.</div>
+                    <div class="benefit-item">👉 Быстрое восстановление сил после физических нагрузок.</div>
+                    <div class="benefit-item">🎁 Создание атмосферы спокойствия и комфорта для души и тела.</div>
+                </div>
+                <p class="why-text">Но самое главное преимущество сауны заключается в приятном ощущении свежести и легкости после процедуры.</p>
+                <p class="why-text">Выберите сауну прямо сейчас и почувствуйте разницу!</p>
+                <p class="why-text">Позаботьтесь о своем здоровье и настроении, наслаждаясь незабываемым отдыхом в настоящей. Закажите посещение сегодня и подарите себе заряд энергии и позитива надолго вперёд!</p>
+                
+                <div id="rowBtn">
+                    <button class="action-btn phone-btn" onclick="showPhoneNumbers()">Позвонить и заказать прямо сейчас</button>
+                    <button class="action-btn feedback-btn" onclick="scrollToFeedback()">Отзывы о нас</button>
+                </div>
+
+                <!-- Модальное окно для телефонов -->
+                <div id="phoneModal" class="phone-modal">
+                    <div class="phone-modal-content">
+                        <h3>Наши контакты</h3>
+                        <p>Позвоните нам для бронирования:</p>
+                        <div class="phone-numbers">
+                            <div class="phone-number">2-766-559</div>
+                            <div class="phone-number">8-952-33-55-444</div>
+                        </div>
+                        <button class="close-modal" onclick="closePhoneModal()">Закрыть</button>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="discounts" id="discount">
+                <h2><strong>Акции и спецпредложения</strong></h2>
+                <div class="slider_discount">
+                    <div class="slides-container">
+                        <div class="slidesOne">
+                            <div class="slideActions active">
+                                <span><strong>ЧАС В ПОДАРОК!</strong></span>
+                                <p>Предоставляется при наличии свободного времени.<br>
+                                   Дарим 6-й час при предварительном бронировании.<br>
+                                   Предварительная запись обязательна, иначе не может быть гарантировано свободное время на подарочный час.</p>
+                            </div>
+                            <div class="slideActions">
+                                <span><strong>ПОДАРОК НА ДЕНЬ РОЖДЕНИЯ - СКИДКА 10%.</strong></span>
+                                <p>Действует в День рождения, а также 1 день до и 6 дней после него.<br>
+                                   Скидка действует неограниченное количество раз, в пределах указанного срока.<br>
+                                   Обязательно предъявление документа, содержащего дату рождения или фотографии!<br>
+                                   Документ может быть предъявлен на стадии бронирования, внесения предоплаты или непосредственно перед посещением.</p>
+                            </div>
+                            <div class="slideActions">
+                                <span><strong>СКИДКА 10% ПОСТОЯННЫМ ПОСЕТИТЕЛЯМ.</strong></span>
+                                <p>Предоставляется на аренду любой сауны.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slide-indicators">
+                        <button class="indicator active" onclick="goToDiscountSlide(0)"></button>
+                        <button class="indicator" onclick="goToDiscountSlide(1)"></button>
+                        <button class="indicator" onclick="goToDiscountSlide(2)"></button>
+                    </div>
+                </div>
+            </div>
+     
+            <section id="feedback">
+                <h2><strong>Отзывы наших гостей</strong></h2>
+                <div class="reviews-grid">
+                    <div class="review-item">
+                        <img src="Анна Иванова.jpg" alt="Анна Иванова" class="avatar">
+                        <div class="rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="review-text">"Просто отлично провели вечер! Всё хорошо организовано."</p>
+                        <small class="author">Анна Иванова</small>
+                    </div>
+                    <div class="review-item">
+                        <img src="Сергей Петров.jpg" alt="Сергей Петров" class="avatar">
+                        <div class="rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="review-text">"Хорошее место для семейного отдыха и встреч с друзьями."</p>
+                        <small class="author">Сергей Петров</small>
+                    </div>
+                    <div class="review-item">
+                        <img src="Екатерина Смирнова.jpg" alt="Екатерина Смирнова" class="avatar">
+                        <div class="rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="review-text">"Замечательное место для отдыха после напряжённой рабочей недели.<br>Огорчил лишь нерабочий туалет"</p>
+                        <small class="author">Екатерина Смирнова</small>
+                    </div>
+                    <div class="review-item">
+                        <img src="Иван Сидоров.jpg" alt="Иван Сидоров" class="avatar">
+                        <div class="rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="review-text">"Идеальное место для корпоративов и семейных праздников."</p>
+                        <small class="author">Иван Сидоров</small>
+                    </div>
+                    <div class="review-item">
+                        <img src="Дмитрий Кузнецов.jpg" alt="Дмитрий Кузнецов" class="avatar">
+                        <div class="rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="review-text">"Очень уютно и комфортно. Отличный сервис."</p>
+                        <small class="author">Дмитрий Кузнецов</small>
+                    </div>
+                    <div class="review-item">
+                        <img src="Ольга Сергеева.jpg" alt="Ольга Сергеева" class="avatar">
+                        <div class="rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="review-text">"Настоящая атмосфера тепла и расслабленности."</p>
+                        <small class="author">Ольга Сергеева</small>
+                    </div>
+                    <div class="review-item">
+                        <img src="Алексей Громов.jpg" alt="Алексей Громов" class="avatar">
+                        <div class="rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="review-text">"Атмосферное пространство, великолепный интерьер и отличный персонал."</p>
+                        <small class="author">Алексей Громов</small>
+                    </div>
+                </div>
+            </section>
+
+            <section class="photogallery" id="gallery">
+                <h2><strong>ФОТОГАЛЕРЕЯ</strong></h2>
+                <div class="galleryOne">
+                    <img src="asssein.jpg" alt="Бассейн" class="image-thumbnail" onclick="openModal(this)">
+                    <img src="XXXL (2).png" alt="Фотопортрет" class="image-thumbnail" onclick="openModal(this)">
+                    <img src="XXXL (3).png" alt="Интерьер комнаты" class="image-thumbnail" onclick="openModal(this)">
+                    <img src="XXXL (5).png" alt="Баня" class="image-thumbnail" onclick="openModal(this)">
+                    <img src="XXXL (4).png" alt="Комната отдыха" class="image-thumbnail" onclick="openModal(this)">
+                    <img src="XXXL (6).png" alt="Спортивная комната" class="image-thumbnail" onclick="openModal(this)">
+                    <img src="XXXL (8).png" alt="Фото помещения" class="image-thumbnail" onclick="openModal(this)">
+                    <img src="XXXL (9).png" alt="Фотография зала" class="image-thumbnail" onclick="openModal(this)">
+                    <img src="XXXL (10).png" alt="Кабинка" class="image-thumbnail" onclick="openModal(this)">
+                    <img src="XXXL.png" alt="Главное здание" class="image-thumbnail" onclick="openModal(this)">
+                </div>
+                
+                <div id="my-modal" class="modal">
+                    <span class="close-btn" onclick="closeModal()">&times;</span>
+                    <img class="modal-image" id="fullscreen-img" alt="Увеличенное изображение">
+                </div>
+            </section>
+        </main>
+
+        <footer id="contacts">
+            <div class="contacts-section">
+                <div class="contacts-info">
+                    <h2><strong>Наши контакты</strong></h2>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            <span><strong>Адрес:</strong> Пермь, ул. Зенкова, д. 4</span>
+                        </div>
+                        <div class="contact-item">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/>
+                            </svg>
+                            <span><strong>Телефон:</strong> 2-766-559, 8-952-33-55-444</span>
+                        </div>
+                        <div class="contact-item">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/>
+                                <path d="M7 10h2v7H7zm4-3h2v10h-2zm4-2h2v12h-2z"/>
+                            </svg>
+                            <span><strong>Время работы:</strong> круглосуточно</span>
+                        </div>
+                    </div>
+                    
+                    <div class="social-buttons">
+                        <a href="https://t.me/ваш_username" target="_blank" class="social-btn telegram">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                            </svg>
+                            <span>Telegram</span>
+                        </a>
+                        <a href="https://vk.com/sauna59perm" target="_blank" class="social-btn vk">
+                            <svg viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2m-2.76 15.13c-1.36 0-1.87-.75-2.6-2.34-.48.95-.99 1.92-1.5 2.88-.45.84-1.25 1.26-1.87 1.26-.4 0-.6-.09-.8-.2L6 16.7c.4.2.8.3 1.2.3.5 0 .8-.3 1.1-.8.5-.9 1-1.85 1.5-2.8.2-.4.3-.7.3-.9 0-.3-.2-.5-.5-.5-.2 0-.4.1-.6.3-.4.4-.8.9-1.1 1.4l-.9-1.2c.5-.7 1-1.4 1.5-2 .5-.5 1-.8 1.5-1 .5-.2 1-.3 1.5-.3.6 0 1 .2 1.2.5.2.3.3.7.2 1.2-.2.9-.6 1.8-1 2.7-.4.9-.8 1.8-1.2 2.7-.2.5 0 .9.3 1 .3.1.6 0 1-.2.5-.3 1-.7 1.5-1 .3-.3.6-.5.9-.7.3-.2.6-.3.9-.3.4 0 .7.2.8.5.2.3.2.6 0 1l-.9 2.2c-.2.5-.4.8-.6 1-.2.2-.5.3-.8.3-.3 0-.6-.1-.9-.3l-1.4-1c-.5.5-1 1-1.5 1.5-.1.1-.2.1-.4.1z"/>
+                            </svg>
+                            <span>VK</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Карта на всю ширину -->
+            <div class="full-width-map">
+                <iframe 
+                    src="https://yandex.ru/map-widget/v1/?ll=56.3218%2C58.0340&pt=56.3218,58.0340&z=17&l=map"
+                    frameborder="0" 
+                    allowfullscreen 
+                    title="Сауна S-59 - ул. Зенкова, 4, Пермь">
+                </iframe>
+            </div>
+        </footer>
+    </div> <!-- end .main-content-wrapper -->
+
+    <div class="floating-buttons-simple">
+        <button class="floating-btn-simple book" onclick="showPhoneNumbers()" title="Забронировать">
+            ☎
+        </button>
+        <button class="floating-btn-simple to-top" onclick="scrollToTop()" title="Наверх">
+            ^
+        </button>
+    </div>
+
+    <script src='new.js'></script>
+</body>
+</html>
