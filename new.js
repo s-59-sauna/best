@@ -460,4 +460,25 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Оптимизация для сенсорных устройств
+
 document.addEventListener('touchstart', function() {}, {passive: true});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.getElementById('mobilePanelToggle');
+    const panel = document.querySelector('.mobile-ad-panel');
+    const icon = toggleBtn.querySelector('.toggle-icon');
+    
+    toggleBtn.addEventListener('click', function() {
+        if (panel.classList.contains('hidden')) {
+            // Показываем панель
+            panel.classList.remove('hidden');
+            icon.textContent = '▲';
+            toggleBtn.style.bottom = '22vh';
+        } else {
+            // Скрываем панель
+            panel.classList.add('hidden');
+            icon.textContent = '▼';
+            toggleBtn.style.bottom = '0';
+        }
+    });
+});
