@@ -2,18 +2,22 @@
 
 // ===== ОСНОВНЫЕ ФУНКЦИИ =====
 
+// Глобальные переменные
+let discountSlider = null;
+let mobileSliderInterval = null;
+let resizeTimeout = null;
+
 // Параллакс эффект
 document.addEventListener('DOMContentLoaded', function() {
     const parallaxBg = document.querySelector('.parallax-bg');
     
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        
-        if (parallaxBg) {
+    if (parallaxBg) {
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
             const bgY = scrolled * 0.8;
             parallaxBg.style.transform = `translateY(${bgY}px)`;
-        }
-    });
+        });
+    }
     
     // Инициализация всех компонентов
     initAllComponents();
@@ -22,129 +26,308 @@ document.addEventListener('DOMContentLoaded', function() {
 // Модальное окно для телефонов
 function showPhoneNumbers() {
     const modal = document.getElementById('phoneModal');
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closePhoneModal() {
     const modal = document.getElementById('phoneModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
-// Закрытие модального окна
-window.onclick = function(event) {
-    const modal = document.getElementById('phoneModal');
-    if (event.target == modal) {
-        closePhoneModal();
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 }
+
+// Закрытие модального окна при клике вне окна
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('phoneModal');
+    if (modal && event.target === modal) {
+        closePhoneModal();
+    }
+    
+    const imageModal = document.getElementById('my-modal');
+    if (imageModal && event.target === imageModal) {
+        closeModal();
+    }
+});
 
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
         closePhoneModal();
+        closeModal();
     }
 });
 
-// ===== СЛАЙДЕР АКЦИЙ =====
 class DiscountSlider {
     constructor() {
-        this.slidesContainer = document.querySelector('.slidesOne');
-        this.slides = document.querySelectorAll('.slideActions');
+        this.slider = document.querySelector('.discounts-slider');
+        this.slides = document.querySelectorAll('.discount-slide');
         this.indicators = document.querySelectorAll('.indicator');
-        this.currentSlideIndex = 0;
+        this.prevBtn = document.querySelector('.prev-btn');
+        this.nextBtn = document.querySelector('.next-btn');
+        
+        this.currentSlide = 0;
         this.totalSlides = this.slides.length;
         this.autoSlideInterval = null;
-        this.isMobile = window.innerWidth <= 768;
+        this.slideDuration = 5000; // 5 секунд
         
         this.init();
     }
     
     init() {
+        // Инициализация первого слайда
         this.updateSlider();
+        
+        // Запуск автопрокрутки
         this.startAutoSlide();
+        
+        // Добавление обработчиков событий
         this.addEventListeners();
+        
+        // Пауза при наведении на слайдер
+        this.addHoverPause();
     }
     
     startAutoSlide() {
-        if (this.autoSlideInterval) {
-            clearInterval(this.autoSlideInterval);
-        }
-        
-        // Разная скорость для мобильных и десктопа
-        const slideDuration = this.isMobile ? 4000 : 5000;
+        this.clearAutoSlide();
         
         this.autoSlideInterval = setInterval(() => {
             this.nextSlide();
-        }, slideDuration);
+        }, this.slideDuration);
+        
+        // Запуск анимации прогресса на индикаторе
+        this.startProgressAnimation();
+    }
+    
+    clearAutoSlide() {
+        if (this.autoSlideInterval) {
+            clearInterval(this.autoSlideInterval);
+            this.autoSlideInterval = null;
+        }
+        
+        // Остановка анимации прогресса
+        this.stopProgressAnimation();
     }
     
     nextSlide() {
-        this.currentSlideIndex = (this.currentSlideIndex + 1) % this.totalSlides;
+        this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
         this.updateSlider();
+        this.startProgressAnimation();
     }
     
     prevSlide() {
-        this.currentSlideIndex = (this.currentSlideIndex - 1 + this.totalSlides) % this.totalSlides;
+        this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
         this.updateSlider();
+        this.startProgressAnimation();
     }
     
     goToSlide(index) {
         if (index >= 0 && index < this.totalSlides) {
-            this.currentSlideIndex = index;
+            this.currentSlide = index;
             this.updateSlider();
+            this.startProgressAnimation();
         }
     }
     
     updateSlider() {
-        const translateValue = -(this.currentSlideIndex * 100 / this.totalSlides) + '%';
-        this.slidesContainer.style.transform = 'translateX(' + translateValue + ')';
-        
-        this.slides.forEach((slide, index) => {
-            slide.classList.toggle('active', index === this.currentSlideIndex);
+        // Удаляем класс active у всех слайдов
+        this.slides.forEach(slide => {
+            slide.classList.remove('active', 'prev', 'next');
         });
         
+        // Добавляем класс active текущему слайду
+        this.slides[this.currentSlide].classList.add('active');
+        
+        // Обновляем индикаторы
         this.indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === this.currentSlideIndex);
+            indicator.classList.toggle('active', index === this.currentSlide);
         });
+        
+        // Добавляем классы для анимации
+        const prevIndex = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+        const nextIndex = (this.currentSlide + 1) % this.totalSlides;
+        
+        this.slides[prevIndex].classList.add('prev');
+        this.slides[nextIndex].classList.add('next');
+    }
+    
+    startProgressAnimation() {
+        // Удаляем предыдущую анимацию
+        this.stopProgressAnimation();
+        
+        const activeIndicator = this.indicators[this.currentSlide];
+        if (activeIndicator) {
+            // Добавляем элемент для анимации прогресса
+            const progress = document.createElement('div');
+            progress.className = 'indicator-progress';
+            progress.style.cssText = `
+                position: absolute;
+                top: -4px;
+                left: -4px;
+                right: -4px;
+                bottom: -4px;
+                border-radius: 50%;
+                border: 2px solid transparent;
+                border-top-color: #d402a7;
+                animation: progress ${this.slideDuration}ms linear forwards;
+            `;
+            
+            activeIndicator.appendChild(progress);
+        }
+    }
+    
+    stopProgressAnimation() {
+        const activeIndicator = this.indicators[this.currentSlide];
+        if (activeIndicator) {
+            const progress = activeIndicator.querySelector('.indicator-progress');
+            if (progress) {
+                progress.remove();
+            }
+        }
     }
     
     addEventListeners() {
-        // Пауза при наведении на десктопе
-        if (!this.isMobile) {
-            this.slidesContainer.addEventListener('mouseenter', () => {
-                clearInterval(this.autoSlideInterval);
+        // Обработчики для индикаторов
+        this.indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                this.clearAutoSlide();
+                this.goToSlide(index);
+                this.startAutoSlide();
             });
-            
-            this.slidesContainer.addEventListener('mouseleave', () => {
+        });
+        
+        // Кнопки навигации
+        if (this.prevBtn) {
+            this.prevBtn.addEventListener('click', () => {
+                this.clearAutoSlide();
+                this.prevSlide();
                 this.startAutoSlide();
             });
         }
         
-        // Сенсорные события для мобильных
-        if (this.isMobile) {
-            let startX = 0;
-            let endX = 0;
-            
-            this.slidesContainer.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].clientX;
+        if (this.nextBtn) {
+            this.nextBtn.addEventListener('click', () => {
+                this.clearAutoSlide();
+                this.nextSlide();
+                this.startAutoSlide();
             });
+        }
+        
+        // Клавиши клавиатуры
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                this.clearAutoSlide();
+                this.prevSlide();
+                this.startAutoSlide();
+            } else if (e.key === 'ArrowRight') {
+                this.clearAutoSlide();
+                this.nextSlide();
+                this.startAutoSlide();
+            } else if (e.key >= '1' && e.key <= '3') {
+                const index = parseInt(e.key) - 1;
+                this.clearAutoSlide();
+                this.goToSlide(index);
+                this.startAutoSlide();
+            }
+        });
+        
+        // Касания для мобильных
+        this.addTouchEvents();
+    }
+    
+    addTouchEvents() {
+        let startX = 0;
+        let endX = 0;
+        const threshold = 50; // минимальное расстояние для свайпа
+        
+        this.slider.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            this.clearAutoSlide();
+        }, { passive: true });
+        
+        this.slider.addEventListener('touchmove', (e) => {
+            endX = e.touches[0].clientX;
+        }, { passive: true });
+        
+        this.slider.addEventListener('touchend', () => {
+            const diffX = startX - endX;
             
-            this.slidesContainer.addEventListener('touchend', (e) => {
-                endX = e.changedTouches[0].clientX;
-                const diffX = startX - endX;
-                
-                if (Math.abs(diffX) > 50) {
-                    if (diffX > 0) {
-                        this.nextSlide();
-                    } else {
-                        this.prevSlide();
-                    }
+            if (Math.abs(diffX) > threshold) {
+                if (diffX > 0) {
+                    this.nextSlide();
+                } else {
+                    this.prevSlide();
                 }
-            });
+            }
+            
+            this.startAutoSlide();
+        }, { passive: true });
+    }
+    
+    addHoverPause() {
+        this.slider.addEventListener('mouseenter', () => {
+            this.clearAutoSlide();
+        });
+        
+        this.slider.addEventListener('mouseleave', () => {
+            this.startAutoSlide();
+        });
+    }
+    
+    // Очистка при уничтожении
+    destroy() {
+        this.clearAutoSlide();
+        
+        // Удаляем все обработчики
+        this.indicators.forEach(indicator => {
+            const newIndicator = indicator.cloneNode(true);
+            indicator.parentNode.replaceChild(newIndicator, indicator);
+        });
+        
+        if (this.prevBtn) {
+            const newPrevBtn = this.prevBtn.cloneNode(true);
+            this.prevBtn.parentNode.replaceChild(newPrevBtn, this.prevBtn);
+        }
+        
+        if (this.nextBtn) {
+            const newNextBtn = this.nextBtn.cloneNode(true);
+            this.nextBtn.parentNode.replaceChild(newNextBtn, this.nextBtn);
         }
     }
 }
+
+// Инициализация слайдера при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    const discountSlider = new DiscountSlider();
+    
+    // Экспорт в глобальную область видимости (для отладки)
+    window.discountSlider = discountSlider;
+    
+    // Очистка при закрытии страницы
+    window.addEventListener('beforeunload', () => {
+        discountSlider.destroy();
+    });
+});
+
+// Добавляем CSS для анимации прогресса
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes progress {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    
+    .indicator-progress {
+        pointer-events: none;
+    }
+`;
+document.head.appendChild(style);
 
 // ===== УПРАВЛЕНИЕ БОКОВОЙ ПАНЕЛЬЮ =====
 
@@ -152,32 +335,37 @@ class DiscountSlider {
 function toggleMobilePanel() {
     const mobilePanel = document.querySelector('.mobile-ad-panel');
     const mobileToggle = document.querySelector('.sidebar-toggle.mobile-toggle');
+    
+    if (!mobilePanel || !mobileToggle) return;
+    
     const toggleIcon = mobileToggle.querySelector('.toggle-icon');
+    const isHidden = mobilePanel.classList.contains('mobile-panel-hidden');
     
-    mobilePanel.classList.toggle('hidden');
-    mobileToggle.classList.toggle('hidden');
-    
-    if (mobilePanel.classList.contains('hidden')) {
-        toggleIcon.textContent = '▼';
-        document.body.style.marginBottom = '0';
-        document.querySelector('.main-content-wrapper').style.marginBottom = '0';
-    } else {
-        toggleIcon.textContent = '▲';
+    if (isHidden) {
+        // Показываем панель
+        mobilePanel.classList.remove('mobile-panel-hidden');
+        mobileToggle.classList.remove('mobile-toggle-hidden');
+        if (toggleIcon) toggleIcon.textContent = '▲';
+        
+        // Рассчитываем высоту динамически
         const panelHeight = mobilePanel.offsetHeight;
-        document.body.style.marginBottom = panelHeight + 'px';
-        document.querySelector('.main-content-wrapper').style.marginBottom = panelHeight + 'px';
+        document.documentElement.style.setProperty('--mobile-panel-height', panelHeight + 'px');
+    } else {
+        // Скрываем панель
+        mobilePanel.classList.add('mobile-panel-hidden');
+        mobileToggle.classList.add('mobile-toggle-hidden');
+        if (toggleIcon) toggleIcon.textContent = '▼';
     }
 }
 
 // Слайдер мобильной панели
-let currentMobileSlide = 0;
-let mobileSliderInterval = null;
-
 function initMobileSlider() {
     const mobileSlides = document.querySelectorAll('.mobile-ad-slide');
     const mobileIndicators = document.querySelectorAll('.mobile-ad-indicators .indicator');
     
     if (mobileSlides.length === 0) return;
+    
+    let currentMobileSlide = 0;
     
     function showMobileSlide(index) {
         mobileSlides.forEach((slide, i) => {
@@ -194,6 +382,11 @@ function initMobileSlider() {
         showMobileSlide(nextIndex);
     }
     
+    // Очищаем предыдущий интервал
+    if (mobileSliderInterval) {
+        clearInterval(mobileSliderInterval);
+    }
+    
     // Автоматическое переключение
     mobileSliderInterval = setInterval(nextMobileSlide, 4000);
     
@@ -207,9 +400,9 @@ function initMobileSlider() {
     });
     
     // Клик по слайдам
+    const titles = ['SPA-продукция', 'Напитки', 'Аренда', 'Спецпредложение'];
     mobileSlides.forEach((slide, index) => {
         slide.addEventListener('click', () => {
-            const titles = ['SPA-продукция', 'Напитки', 'Аренда', 'Спецпредложение'];
             alert(`Вы выбрали: ${titles[index]}\nНаш менеджер свяжется с вами для уточнения деталей.`);
         });
     });
@@ -217,10 +410,10 @@ function initMobileSlider() {
 
 // ===== ДРУГИЕ ФУНКЦИИ =====
 
-// Глобальные переменные
-let discountSlider = null;
-
 function initDiscountSlider() {
+    if (discountSlider) {
+        discountSlider.destroy();
+    }
     discountSlider = new DiscountSlider();
 }
 
@@ -245,14 +438,21 @@ function goToDiscountSlide(index) {
 // Фотогалерея
 function openModal(imgElement) {
     const modalImg = document.getElementById("fullscreen-img");
-    modalImg.src = imgElement.src;
-    document.getElementById("my-modal").style.display = "flex";
-    document.body.style.overflow = 'hidden';
+    const modal = document.getElementById("my-modal");
+    
+    if (modalImg && modal) {
+        modalImg.src = imgElement.src;
+        modal.style.display = "flex";
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeModal() {
-    document.getElementById("my-modal").style.display = "none";
-    document.body.style.overflow = 'auto';
+    const modal = document.getElementById("my-modal");
+    if (modal) {
+        modal.style.display = "none";
+        document.body.style.overflow = 'auto';
+    }
 }
 
 // Прокрутка
@@ -274,22 +474,28 @@ function scrollToFeedback() {
 }
 
 function scrollToContacts() {
-    document.getElementById('contacts').scrollIntoView({
-        behavior: 'smooth'
-    });
+    const contacts = document.getElementById('contacts');
+    if (contacts) {
+        contacts.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
 }
 
 // Кнопка "Наверх"
 function initScrollToTopButton() {
     const toTopBtn = document.querySelector('.floating-btn-simple.to-top');
     
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 300) {
-            toTopBtn.classList.add('visible');
-        } else {
-            toTopBtn.classList.remove('visible');
-        }
-    });
+    if (toTopBtn) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                toTopBtn.classList.add('visible');
+            } else {
+                toTopBtn.classList.remove('visible');
+            }
+        });
+    }
 }
 
 // ===== АДАПТИВНЫЕ ФУНКЦИИ =====
@@ -311,76 +517,109 @@ function initAllComponents() {
     
     // Инициализация обработчиков клавиатуры
     initKeyboardHandlers();
+    
+    // Обработчик переключения мобильной панели
+    const toggleBtn = document.getElementById('mobilePanelToggle');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', toggleMobilePanel);
+    }
+    
+    // Добавление пункта "карта" в мобильное меню
+    if (window.innerWidth <= 1200) {
+        const nav = document.querySelector('.refs');
+        if (nav) {
+            const contactsLi = document.createElement('li');
+            const contactsLink = document.createElement('a');
+            contactsLink.href = '#contacts';
+            contactsLink.innerHTML = '<strong>карта</strong>';
+            contactsLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                scrollToContacts();
+            });
+            contactsLi.appendChild(contactsLink);
+            nav.appendChild(contactsLi);
+        }
+    }
 }
 
 // Обработчики рекламы
 function initAdHandlers() {
     document.querySelectorAll('.ad-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            const adTitle = this.closest('.ad-block').querySelector('h3').textContent;
-            alert(`Вы выбрали: ${adTitle}\nНаш менеджер свяжется с вами для уточнения деталей.`);
+            const adBlock = this.closest('.ad-block');
+            if (adBlock) {
+                const adTitle = adBlock.querySelector('h3');
+                if (adTitle) {
+                    alert(`Вы выбрали: ${adTitle.textContent}\nНаш менеджер свяжется с вами для уточнения деталей.`);
+                }
+            }
         });
     });
 }
 
 // Адаптивные обработчики
 function initResponsiveHandlers() {
-    const mobileToggle = document.querySelector('.sidebar-toggle.mobile-toggle');
-    if (mobileToggle) {
-        mobileToggle.addEventListener('click', toggleMobilePanel);
-    }
-    
     // Автоскрытие мобильной панели при скролле
     let lastScrollTop = 0;
     const scrollThreshold = 100;
     
-    window.addEventListener('scroll', function() {
+    function handleAutoHideOnScroll() {
         if (window.innerWidth <= 1200) {
             const st = window.pageYOffset || document.documentElement.scrollTop;
             const mobilePanel = document.querySelector('.mobile-ad-panel');
             const mobileToggle = document.querySelector('.sidebar-toggle.mobile-toggle');
             
+            if (!mobilePanel || !mobileToggle) return;
+            
+            const isPanelHidden = mobilePanel.classList.contains('mobile-panel-hidden');
+            
             if (st > lastScrollTop && st > scrollThreshold) {
                 // Скролл вниз - скрываем
-                if (mobilePanel && !mobilePanel.classList.contains('hidden')) {
-                    mobilePanel.classList.add('hidden');
-                    mobileToggle.classList.add('hidden');
-                    mobileToggle.querySelector('.toggle-icon').textContent = '▼';
+                if (!isPanelHidden) {
+                    mobilePanel.classList.add('mobile-panel-hidden');
+                    mobileToggle.classList.add('mobile-toggle-hidden');
+                    const toggleIcon = mobileToggle.querySelector('.toggle-icon');
+                    if (toggleIcon) toggleIcon.textContent = '▼';
                 }
             } else if (st < lastScrollTop) {
                 // Скролл вверх - показываем
-                if (mobilePanel && mobilePanel.classList.contains('hidden')) {
-                    mobilePanel.classList.remove('hidden');
-                    mobileToggle.classList.remove('hidden');
-                    mobileToggle.querySelector('.toggle-icon').textContent = '▲';
+                if (isPanelHidden) {
+                    mobilePanel.classList.remove('mobile-panel-hidden');
+                    mobileToggle.classList.remove('mobile-toggle-hidden');
+                    const toggleIcon = mobileToggle.querySelector('.toggle-icon');
+                    if (toggleIcon) toggleIcon.textContent = '▲';
                 }
             }
             lastScrollTop = st <= 0 ? 0 : st;
         }
-    }, false);
+    }
+    
+    window.addEventListener('scroll', handleAutoHideOnScroll, { passive: true });
     
     // Обработка изменения размера окна
-    let resizeTimeout;
-    window.addEventListener('resize', function() {
+    function debouncedResize() {
         clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(function() {
-            handleResize();
-        }, 250);
-    });
+        resizeTimeout = setTimeout(handleResize, 250);
+    }
+    
+    window.addEventListener('resize', debouncedResize);
     
     // Первоначальная настройка
     handleResize();
 }
 
 function handleResize() {
-    const isMobile = window.innerWidth <= 1200;
+    const isMobileView = window.innerWidth <= 1200;
     const mobilePanel = document.querySelector('.mobile-ad-panel');
     const desktopSidebar = document.querySelector('.ad-sidebar');
     
-    if (isMobile) {
+    if (isMobileView) {
         // Мобильный режим
         if (desktopSidebar) desktopSidebar.style.display = 'none';
-        if (mobilePanel) mobilePanel.style.display = 'block';
+        if (mobilePanel) {
+            mobilePanel.style.display = 'block';
+            mobilePanel.classList.remove('mobile-panel-hidden');
+        }
         
         // Обновление слайдера акций для мобильных
         if (discountSlider) {
@@ -390,7 +629,10 @@ function handleResize() {
     } else {
         // Десктоп режим
         if (desktopSidebar) desktopSidebar.style.display = 'flex';
-        if (mobilePanel) mobilePanel.style.display = 'none';
+        if (mobilePanel) {
+            mobilePanel.style.display = 'none';
+            mobilePanel.classList.add('mobile-panel-hidden');
+        }
         
         // Обновление слайдера акций для десктопа
         if (discountSlider) {
@@ -426,59 +668,22 @@ function initKeyboardHandlers() {
             }
         }
         
-        // Закрытие модальных окон по ESC
-        if (event.key === 'Escape') {
-            const phoneModal = document.getElementById('phoneModal');
-            const imageModal = document.getElementById('my-modal');
-            
-            if (phoneModal && phoneModal.style.display !== 'none') {
-                closePhoneModal();
-            }
-            
-            if (imageModal && imageModal.style.display !== 'none') {
-                closeModal();
-            }
-        }
+        // Закрытие модальных окон по ESC уже обрабатывается выше
     });
 }
 
-// Навигация в мобильном меню
-document.addEventListener('DOMContentLoaded', function() {
-    const nav = document.querySelector('.refs');
-    if (nav && window.innerWidth <= 1200) {
-        const contactsLi = document.createElement('li');
-        const contactsLink = document.createElement('a');
-        contactsLink.href = '#contacts';
-        contactsLink.innerHTML = '<strong>карта</strong>';
-        contactsLink.onclick = function(e) {
-            e.preventDefault();
-            scrollToContacts();
-        };
-        contactsLi.appendChild(contactsLink);
-        nav.appendChild(contactsLi);
-    }
-});
-
 // Оптимизация для сенсорных устройств
-
 document.addEventListener('touchstart', function() {}, {passive: true});
 
-document.addEventListener('DOMContentLoaded', function() {
-    const toggleBtn = document.getElementById('mobilePanelToggle');
-    const panel = document.querySelector('.mobile-ad-panel');
-    const icon = toggleBtn.querySelector('.toggle-icon');
-    
-    toggleBtn.addEventListener('click', function() {
-        if (panel.classList.contains('hidden')) {
-            // Показываем панель
-            panel.classList.remove('hidden');
-            icon.textContent = '▲';
-            toggleBtn.style.bottom = '22vh';
-        } else {
-            // Скрываем панель
-            panel.classList.add('hidden');
-            icon.textContent = '▼';
-            toggleBtn.style.bottom = '0';
-        }
-    });
+// Очистка при закрытии страницы
+window.addEventListener('beforeunload', function() {
+    if (discountSlider) {
+        discountSlider.destroy();
+    }
+    if (mobileSliderInterval) {
+        clearInterval(mobileSliderInterval);
+    }
+    if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+    }
 });
