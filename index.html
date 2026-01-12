@@ -164,38 +164,51 @@
                 </div>
             </section>
             
-            <div class="discounts" id="discount">
-                <h2><strong>Акции и спецпредложения</strong></h2>
-                <div class="slider_discount">
-                    <div class="slides-container">
-                        <div class="slidesOne">
-                            <div class="slideActions active">
-                                <span><strong>ЧАС В ПОДАРОК!</strong></span>
-                                <p>Предоставляется при наличии свободного времени.<br>
-                                   Дарим 6-й час при предварительном бронировании.<br>
-                                   Предварительная запись обязательна, иначе не может быть гарантировано свободное время на подарочный час.</p>
-                            </div>
-                            <div class="slideActions">
-                                <span><strong>ПОДАРОК НА ДЕНЬ РОЖДЕНИЯ - СКИДКА 10%.</strong></span>
-                                <p>Действует в День рождения, а также 1 день до и 6 дней после него.<br>
-                                   Скидка действует неограниченное количество раз, в пределах указанного срока.<br>
-                                   Обязательно предъявление документа, содержащего дату рождения или фотографии!<br>
-                                   Документ может быть предъявлен на стадии бронирования, внесения предоплаты или непосредственно перед посещением.</p>
-                            </div>
-                            <div class="slideActions">
-                                <span><strong>СКИДКА 10% ПОСТОЯННЫМ ПОСЕТИТЕЛЯМ.</strong></span>
-                                <p>Предоставляется на аренду любой сауны.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="slide-indicators">
-                        <button class="indicator active" onclick="goToDiscountSlide(0)"></button>
-                        <button class="indicator" onclick="goToDiscountSlide(1)"></button>
-                        <button class="indicator" onclick="goToDiscountSlide(2)"></button>
+           <div class="discounts-section" id="discount">
+    <h2 class="section-title">Акции и спецпредложения</h2>
+    
+    <div class="discounts-slider">
+        <!-- Контейнер для слайдов -->
+        <div class="slider-container">
+            <!-- Слайд 1 -->
+            <div class="discount-slide active">
+                <div class="slide-content">
+                    <h3 class="slide-title">ЧАС В ПОДАРОК!</h3>
+                    <div class="slide-text">
+                        <p>Предоставляется при наличии свободного времени.</p>
+                        <p>Дарим 6-й час при предварительном бронировании.</p>
+                        <p>Предварительная запись обязательна, иначе не может быть гарантировано свободное время на подарочный час.</p>
                     </div>
                 </div>
             </div>
+            <!-- Слайд 2 -->
+            <div class="discount-slide">
+                <div class="slide-content">
+                    <h3 class="slide-title">ПОДАРОК НА ДЕНЬ РОЖДЕНИЯ - СКИДКА 10%</h3>
+                    <div class="slide-text">
+                        <p>Действует в День рождения, а также 1 день до и 6 дней после него.</p>
+                        <p>Скидка действует неограниченное количество раз, в пределах указанного срока.</p>
+                        <p>Обязательно предъявление документа, содержащего дату рождения или фотографии!</p>
+                        <p>Документ может быть предъявлен на стадии бронирования, внесения предоплаты или непосредственно перед посещением.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Слайд 3 -->
+            <div class="discount-slide">
+                <div class="slide-content">
+                    <h3 class="slide-title">СКИДКА 10% ПОСТОЯННЫМ ПОСЕТИТЕЛЯМ</h3>
+                    <div class="slide-text">
+                        <p>Предоставляется на аренду любой сауны.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Кнопки навигации (опционально) -->
+        <button class="slider-btn prev-btn" aria-label="Предыдущий слайд">‹</button>
+        <button class="slider-btn next-btn" aria-label="Следующий слайд">›</button>
+    </div>
+</div>
+
      
             <section id="feedback">
                 <h2><strong>Отзывы наших гостей</strong></h2>
@@ -285,7 +298,7 @@
             <section class="photogallery" id="gallery">
                 <h2><strong>ФОТОГАЛЕРЕЯ</strong></h2>
                 <div class="galleryOne">
-                    <img src="asssein.jpg" alt="Бассейн" class="image-thumbnail" onclick="openModal(this)">
+                    <img src="Basssein.jpg" alt="Бассейн" class="image-thumbnail" onclick="openModal(this)">
                     <img src="XXXL (2).png" alt="Фотопортрет" class="image-thumbnail" onclick="openModal(this)">
                     <img src="XXXL (3).png" alt="Интерьер комнаты" class="image-thumbnail" onclick="openModal(this)">
                     <img src="XXXL (5).png" alt="Баня" class="image-thumbnail" onclick="openModal(this)">
